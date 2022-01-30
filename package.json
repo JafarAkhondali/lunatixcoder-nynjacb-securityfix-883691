@@ -1,18 +1,19 @@
 {
-  "name": "togetherjs",
-  "version": "0.4.0a",
+  "name": "nynjacb",
+  "version": "0.1.0",
   "main": "hub/server.js",
   "description": "Collaborative help system",
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mozilla/togetherjs.git"
+    "url": "https://github.com/NynaMC/nynjacb.git"
   },
   "dependencies": {
     "ejs": "~2.5.5",
     "ejs-locals": "~1.0.2",
     "express": "~3.0.6",
     "grunt-amd-check": "~0.5.1",
+    "grunt-cli": "^1.4.3",
     "habitat": "~0.4.0",
     "less": "~1.3.1",
     "less-middleware": "~0.1.9",
@@ -25,25 +26,25 @@
     "winston": "~0.6.2"
   },
   "devDependencies": {
-    "grunt-contrib-less": "~0.5.1",
-    "grunt-contrib-csslint": "~0.1.2",
-    "grunt-contrib-jshint": "~0.4.3",
-    "grunt-contrib-requirejs": "~0.4.1",
-    "grunt-contrib-watch": "~0.4.3",
+    "docco": "~0.6.2",
+    "freeport": "~1.0.3",
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-csslint": "~0.1.2",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-contrib-less": "~0.5.1",
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-watch": "~0.4.3",
     "grunt-http-server": "~0.0.5",
-    "nunjucks": "~0.1.8a",
-    "marked": "~0.3.4",
-    "docco": "~0.6.2",
+    "grunt-lib-phantomjs": "~0.6.0",
     "highlight.js": "~7.3.0",
-    "optimist": "~0.6.0",
-    "freeport": "~1.0.3",
-    "grunt-lib-phantomjs": "~0.6.0"
+    "marked": "~0.3.4",
+    "nunjucks": "~0.1.8a",
+    "optimist": "~0.6.0"
   },
   "engines": {
-    "node": "~0.12.7",
-    "npm": "^2.11.3"
+    "node": "v17.0.1",
+    "npm": "8.4.0"
   },
   "scripts": {
     "start": "node hub/server.js",

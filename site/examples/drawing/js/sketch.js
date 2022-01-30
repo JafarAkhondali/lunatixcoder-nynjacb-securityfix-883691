@@ -70,8 +70,8 @@ function eraser() {
 function clear(send) {
   context.clearRect(0, 0, canvas.width, canvas.height);
   lines = [];
-  if (send && TogetherJS.running) {
-    TogetherJS.send({
+  if (send && NynjaCB.running) {
+    NynjaCB.send({
       type: 'clear'
     });
   }
@@ -83,7 +83,7 @@ function reDraw(lines){
     draw(lines[i][0], lines[i][1], lines[i][2], lines[i][3], lines[i][4], false);
   }
 }
-// Draws the lines, called by move and the TogetherJS event listener:
+// Draws the lines, called by move and the NynjaCB event listener:
 function draw(start, end, color, size, compositeOperation, save) {
   context.save();
   context.lineJoin = 'round'; 
@@ -121,8 +121,8 @@ function move(e) {
     y: (400/canvas.height)*lastMouse.y
   };
   draw(sendLastMouse, sendMouse, context.strokeStyle, context.lineWidth, context.globalCompositeOperation, true);
-  if (TogetherJS.running) {
-    TogetherJS.send({
+  if (NynjaCB.running) {
+    NynjaCB.send({
       type: 'draw',
       start: sendLastMouse,
       end: sendMouse,
@@ -174,8 +174,8 @@ function touchmove(e) {
       var lastTouch = ongoingTouches[idx];
       var touch = convertTouch(touches[i]);
       draw(lastTouch, touch, context.strokeStyle, context.lineWidth, context.globalCompositeOperation, true);
-      if (TogetherJS.running) {
-        TogetherJS.send({
+      if (NynjaCB.running) {
+        NynjaCB.send({
           type: 'draw',
           start: lastTouch,
           end: touch,
@@ -199,8 +199,8 @@ function touchend(e) {
       var lastTouch = ongoingTouches[idx];
       var touch = convertTouch(touches[i]);
       draw(lastTouch, touch, context.strokeStyle, context.lineWidth, context.globalCompositeOperation, true);
-      if (TogetherJS.running) {
-        TogetherJS.send({
+      if (NynjaCB.running) {
+        NynjaCB.send({
           type: 'draw',
           start: lastTouch,
           end: touch,
@@ -227,7 +227,7 @@ function touchcancel(e) {
 }
 
 // Listens for draw messages, sends info about the drawn lines:
-TogetherJS.hub.on('draw', function (msg) {
+NynjaCB.hub.on('draw', function (msg) {
   if (!msg.sameUrl) {
       return;
   }
@@ -236,7 +236,7 @@ TogetherJS.hub.on('draw', function (msg) {
 
 
 // Clears the canvas whenever someone presses the clear-button
-TogetherJS.hub.on('clear', function (msg) {
+NynjaCB.hub.on('clear', function (msg) {
   if (!msg.sameUrl) {
     return;
   }
@@ -244,15 +244,15 @@ TogetherJS.hub.on('clear', function (msg) {
 });
 
 // Hello is sent from every newly connected user, this way they will receive what has already been drawn:
-TogetherJS.hub.on('togetherjs.hello', function () {
-  TogetherJS.send({
+NynjaCB.hub.on('nynjacb.hello', function () {
+  NynjaCB.send({
     type: 'init',
     lines: lines
   });
 });
 
 // Draw initially received drawings:
-TogetherJS.hub.on('init', function (msg) {
+NynjaCB.hub.on('init', function (msg) {
   reDraw(msg.lines);
   lines = msg.lines;
 });
@@ -316,9 +316,9 @@ $(document).ready(function () {
     eraser();
     changeMouse();
   });
-  // TogetherJS user color:
+  // NynjaCB user color:
   $('.user-color-pick').click(function() {
-    setColor(TogetherJS.require('peers').Self.color);
+    setColor(NynjaCB.require('peers').Self.color);
     changeMouse();
   });
 

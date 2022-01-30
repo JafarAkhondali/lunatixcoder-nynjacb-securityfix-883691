@@ -9,8 +9,8 @@ $('#add').click( function() {
   $('#description').val("").change();
   addItem(Description, id);
   save();
-  if (TogetherJS.running) {
-    TogetherJS.send({type: "new-item", description: Description, id: id});
+  if (NynjaCB.running) {
+    NynjaCB.send({type: "new-item", description: Description, id: id});
   }
   return false;
 });
@@ -34,12 +34,12 @@ function addItem(description, id) {
   $("#todos").append(li);
 }
 
-TogetherJS.hub.on("new-item", function (msg) {
+NynjaCB.hub.on("new-item", function (msg) {
   addItem(msg.description, msg.id);
   save();
 });
 
-TogetherJS.hub.on("init-items", function (msg) {
+NynjaCB.hub.on("init-items", function (msg) {
   $("#todos").empty();
   msg.items.forEach(function (item) {
     addItem(item.description, item.id);
@@ -47,8 +47,8 @@ TogetherJS.hub.on("init-items", function (msg) {
   save();
 });
 
-TogetherJS.hub.on("togetherjs.hello togetherjs.hello-back", function () {
-  TogetherJS.send({type: "init-items", items: getItems()});
+NynjaCB.hub.on("nynjacb.hello nynjacb.hello-back", function () {
+  NynjaCB.send({type: "init-items", items: getItems()});
 });
 
 function getItems() {
@@ -76,8 +76,8 @@ function save() {
 $('#clear').click(function() {
   $("#todos").empty();
   save();
-  if (TogetherJS.running) {
-    TogetherJS.send({type: "init-items", items: []});
+  if (NynjaCB.running) {
+    NynjaCB.send({type: "init-items", items: []});
   }
   return false;
 });

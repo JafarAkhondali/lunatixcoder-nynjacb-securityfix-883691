@@ -62,14 +62,14 @@ module.exports = function (grunt) {
 
   var libs = [];
   grunt.file.expand(
-    ["togetherjs/*.js", "!togetherjs/randomutil.js", "!togetherjs/recorder.js", "!togetherjs/togetherjs.js"]
+    ["nynjacb/*.js", "!nynjacb/randomutil.js", "!nynjacb/recorder.js", "!nynjacb/nynjacb.js"]
   ).forEach(function (filename) {
-    filename = filename.replace(/^togetherjs\//, "");
+    filename = filename.replace(/^nynjacb\//, "");
     filename = filename.replace(/\.js$/, "");
     libs.push(filename);
   });
   var langs = [];
-  grunt.file.expand("togetherjs/locale/*.json").forEach(function (langFilename) {
+  grunt.file.expand("nynjacb/locale/*.json").forEach(function (langFilename) {
     var lang = path.basename(langFilename).replace(/\.json/, "");
     langs.push(lang);
     libs.push("templates-" + lang);
@@ -81,8 +81,8 @@ module.exports = function (grunt) {
     less: {
       development: {
         files: {
-          "<%= grunt.option('dest') || 'build' %>/togetherjs/togetherjs.css": "togetherjs/togetherjs.less",
-          "<%= grunt.option('dest') || 'build' %>/togetherjs/recorder.css": "togetherjs/recorder.less"
+          "<%= grunt.option('dest') || 'build' %>/nynjacb/nynjacb.css": "nynjacb/nynjacb.less",
+          "<%= grunt.option('dest') || 'build' %>/nynjacb/recorder.css": "nynjacb/recorder.less"
         },
         options: {
           dumpLineNumbers: dumpLineNumbers
@@ -93,7 +93,7 @@ module.exports = function (grunt) {
     requirejs: {
       compile: {
         options: {
-          baseUrl: "togetherjs/",
+          baseUrl: "nynjacb/",
           //paths: requirejsPaths,
           include: ["libs/almond"].concat(libs),
           //Wrap any build bundle in a start and end text specified by wrap.
@@ -103,11 +103,11 @@ module.exports = function (grunt) {
           //the end user use requirejs.
           wrap: {
             start: "(function() {",
-            end: "TogetherJS.require = TogetherJS._requireObject = require;\nTogetherJS._loaded = true;\nrequire([\"session\"]);\n}());"
+            end: "NynjaCB.require = NynjaCB._requireObject = require;\nNynjaCB._loaded = true;\nrequire([\"session\"]);\n}());"
           },
           optimize: "none",
           out: function writer(text) {
-            var dest = path.join(grunt.option("dest"), "togetherjs/togetherjsPackage.js");
+            var dest = path.join(grunt.option("dest"), "nynjacb/nynjacbPackage.js");
             grunt.file.write(dest, text);
           }
         }
@@ -124,7 +124,7 @@ module.exports = function (grunt) {
       },
       all: [
         "Gruntfile",
-        "togetherjs/*.js"
+        "nynjacb/*.js"
       ]
     },
 
@@ -133,29 +133,29 @@ module.exports = function (grunt) {
       options: {
         csslintrc: ".csslint.rc"
       },
-      src: [path.join(grunt.option("dest"), "togetherjs/togetherjs.css")]
+      src: [path.join(grunt.option("dest"), "nynjacb/nynjacb.css")]
     },
 
     watch: {
       main: {
-        files: ["togetherjs/**/*", "Gruntfile.js"],
+        files: ["nynjacb/**/*", "Gruntfile.js"],
         tasks: ["build"],
         options: {
           nospawn: true
         }
       },
       site: {
-        files: ["togetherjs/**/*", "Gruntfile.js", "site/**/*", "!**/*_flymake*", "!**/*~", "!**/.*"],
+        files: ["nynjacb/**/*", "Gruntfile.js", "site/**/*", "!**/*_flymake*", "!**/*~", "!**/.*"],
         tasks: ["build", "buildsite"]
       },
       // FIXME: I thought I wouldn't have to watch for
-      // togetherjs/**/*.js, but because the hard links are regularly
+      // nynjacb/**/*.js, but because the hard links are regularly
       // broken by git, this needs to be run often, and it's easy to
       // forget.  Then between git action the build will be over-run,
       // but that's harmless.
       minimal: {
-        files: ["togetherjs/**/*.less", "togetherjs/togetherjs.js", "togetherjs/templates-localized.js", 
-                "togetherjs/**/*.html", "togetherjs/**/*.js", "!**/*_flymake*", "togetherjs/locales/**/*.json"],
+        files: ["nynjacb/**/*.less", "nynjacb/nynjacb.js", "nynjacb/templates-localized.js", 
+                "nynjacb/**/*.html", "nynjacb/**/*.js", "!**/*_flymake*", "nynjacb/locales/**/*.json"],
         tasks: ["build"]
       }
     },
@@ -173,7 +173,7 @@ module.exports = function (grunt) {
     },
 
     'phantom-tests': grunt.file.expand({
-      cwd:"togetherjs/tests/"
+      cwd:"nynjacb/tests/"
     }, "test_*.js", "func_*.js", "interactive.js", "!test_ot.js").
     reduce(function(o, k) { o[k] = {}; return o; }, {})
 
@@ -198,11 +198,11 @@ module.exports = function (grunt) {
       jqueryui: "libs/jquery-ui.min",
       jquerypunch: "libs/jquery.ui.touch-punch.min",
       // Make sure we get the built form of this one:
-      templates: path.join("..", grunt.option("dest"), "togetherjs/templates")
+      templates: path.join("..", grunt.option("dest"), "nynjacb/templates")
     };
     langs.forEach(function(lang) {
       requirejsPaths["templates-" + lang] =
-        path.join("..", grunt.option("dest"), "togetherjs", "templates-" + lang);
+        path.join("..", grunt.option("dest"), "nynjacb", "templates-" + lang);
     });
     grunt.config.merge({
       requirejs: {
@@ -217,15 +217,15 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask("copylib", "copy the library", function () {
-    var pattern = ["**", "!togetherjs.js", "!templates-localized.js", "!**/*.less", "!#*", "!**/*_flymake*", "!**/*.md", "!**/*.tmp", "!**/#*"];
-    grunt.log.writeln("Copying files from " + "togetherjs/".cyan + " to " + path.join(grunt.option("dest"), "togetherjs").cyan);
+    var pattern = ["**", "!nynjacb.js", "!templates-localized.js", "!**/*.less", "!#*", "!**/*_flymake*", "!**/*.md", "!**/*.tmp", "!**/#*"];
+    grunt.log.writeln("Copying files from " + "nynjacb/".cyan + " to " + path.join(grunt.option("dest"), "nynjacb").cyan);
     if (grunt.option("exclude-tests")) {
       pattern.push("!tests/");
       pattern.push("!tests/**");
       grunt.log.writeln("  (excluding tests)");
     }
     copyMany(
-      "togetherjs/", path.join(grunt.option("dest"), "togetherjs"),
+      "nynjacb/", path.join(grunt.option("dest"), "nynjacb"),
       pattern
       );
   });
@@ -258,7 +258,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask(
     "substitute",
-    "Substitute templates-localized.js and parameters in togetherjs.js",
+    "Substitute templates-localized.js and parameters in nynjacb.js",
     function () {
       // FIXME: I could use grunt.file.copy(..., {process: function (content, path) {}}) here
       var baseUrl = grunt.option("base-url") || ""; // baseURL to be entered by the user
@@ -266,13 +266,13 @@ module.exports = function (grunt) {
         grunt.log.writeln("No --base-url, using auto-detect");
       }
       var destBase = grunt.option("dest") || "build"; // where to put the built files. If not indicated then into build/
-      var hubUrl = grunt.option("hub-url") || process.env.HUB_URL || "https://hub.togetherjs.com"; // URL of the hub server
+      var hubUrl = grunt.option("hub-url") || process.env.HUB_URL || "https://hub.nynjacb.com"; // URL of the hub server
       grunt.log.writeln("Using hub URL " + hubUrl.cyan);
       var gitCommit = process.env.GIT_COMMIT || "";
       var subs = {
-        __interface_html__: grunt.file.read("togetherjs/interface.html"),
-        __help_txt__: grunt.file.read("togetherjs/help.txt"), 
-        __walkthrough_html__: grunt.file.read("togetherjs/walkthrough.html"),
+        __interface_html__: grunt.file.read("nynjacb/interface.html"),
+        __help_txt__: grunt.file.read("nynjacb/help.txt"), 
+        __walkthrough_html__: grunt.file.read("nynjacb/walkthrough.html"),
         __baseUrl__: baseUrl,
         __hubUrl__: hubUrl,
         __gitCommit__: gitCommit
@@ -290,12 +290,12 @@ module.exports = function (grunt) {
       }
 
       var filenames = {
-        "togetherjs.js": {
-          src: "togetherjs/togetherjs.js",
+        "nynjacb.js": {
+          src: "nynjacb/nynjacb.js",
           extraVariables: {__min__: "no"}
         },
-        "togetherjs-min.js": {
-          src: "togetherjs/togetherjs.js",
+        "nynjacb-min.js": {
+          src: "nynjacb/nynjacb.js",
           extraVariables: {__min__: "yes"}
         }
       };
@@ -319,18 +319,18 @@ module.exports = function (grunt) {
         grunt.file.write(dest, content);
       }
 
-      grunt.file.expand("togetherjs/locale/*.json").forEach(function (langFilename) {
-        var templates = grunt.file.read("togetherjs/templates-localized.js");
+      grunt.file.expand("nynjacb/locale/*.json").forEach(function (langFilename) {
+        var templates = grunt.file.read("nynjacb/templates-localized.js");
         var lang = path.basename(langFilename).replace(/\.json/, "");
         var translation = JSON.parse(grunt.file.read(langFilename));
-        var dest = path.join(grunt.option("dest"), "togetherjs/templates-" + lang + ".js");
-        
-        var translatedInterface = translateFile("togetherjs/interface.html", translation);
-        var translatedHelp = translateFile("togetherjs/help.txt", translation);
-        var translatedWalkthrough = translateFile("togetherjs/walkthrough.html", translation);
+        var dest = path.join(grunt.option("dest"), "nynjacb/templates-" + lang + ".js");
+
+        var translatedInterface = translateFile("nynjacb/interface.html", translation);
+        var translatedHelp = translateFile("nynjacb/help.txt", translation);
+        var translatedWalkthrough = translateFile("nynjacb/walkthrough.html", translation);
 
         var vars = subs;
-        
+
         subs.__interface_html__ = translatedInterface;
         subs.__help_txt__ = translatedHelp;
         subs.__walkthrough_html__ = translatedWalkthrough;
@@ -345,7 +345,7 @@ module.exports = function (grunt) {
     }
   );
 
-      
+
   function translateFile(source, translation) {
     var env = new nunjucks.Environment(new nunjucks.FileSystemLoader("./"));
     var tmpl = env.getTemplate(source);
@@ -356,8 +356,8 @@ module.exports = function (grunt) {
     });
   }
 
-  grunt.registerTask("maybeless", "Maybe compile togetherjs.less", function () {
-    var sources = grunt.file.expand(["togetherjs/**/*.less", "site/**/*.less"]);
+  grunt.registerTask("maybeless", "Maybe compile nynjacb.less", function () {
+    var sources = grunt.file.expand(["nynjacb/**/*.less", "site/**/*.less"]);
     var found = false;
     sources.forEach(function (fn) {
       var source = fs.statSync(fn);
@@ -504,9 +504,9 @@ module.exports = function (grunt) {
 
   grunt.registerTask("docco", "Create comment-separating source code", function () {
     var env = new nunjucks.Environment(new nunjucks.FileSystemLoader("site/"));
-    var sources = grunt.file.expand({cwd: "togetherjs/"}, "*.js");
+    var sources = grunt.file.expand({cwd: "nynjacb/"}, "*.js");
     sources.sort();
-    var sourceDescriptions = JSON.parse(grunt.file.read("togetherjs/module-descriptions.json"));
+    var sourceDescriptions = JSON.parse(grunt.file.read("nynjacb/module-descriptions.json"));
     var sourceList = [];
     sources.forEach(function (source) {
       var name = source.replace(/\.js$/, "");
@@ -520,7 +520,7 @@ module.exports = function (grunt) {
       var sourceName = source.replace(/\.js$/, "");
       var dest = grunt.option("dest") + "/source/" + source + ".html";
       grunt.log.writeln("Rendering " + source.cyan + " to " + dest.cyan);
-      var code = grunt.file.read("togetherjs/" + source);
+      var code = grunt.file.read("nynjacb/" + source);
       var sections = docco.parse(source, code, {languages:{}});
       doccoFormat(source, sections);
       sections.forEach(function (section, i) {
@@ -543,7 +543,7 @@ module.exports = function (grunt) {
       grunt.file.write(dest, result);
     });
     var tmplVars = Object.create(vars);
-    tmplVars.title = "TogetherJS Source Code";
+    tmplVars.title = "NynjaCB Source Code";
     tmplVars.sourceList = sourceList;
     tmplVars.base = "../";
     var tmpl = env.getTemplate("source-code-index.tmpl");
@@ -565,82 +565,82 @@ module.exports = function (grunt) {
         done();
         return;
       }
-      var dest = path.join(grunt.option("dest"), "togetherjs.xpi");
-      grunt.file.copy("addon/togetherjs.xpi", dest);
+      var dest = path.join(grunt.option("dest"), "nynjacb.xpi");
+      grunt.file.copy("addon/nynjacb.xpi", dest);
       grunt.log.writeln("Created " + dest.cyan);
       done();
     });
   });
 
-  grunt.registerTask("publish", "Publish to togetherjs.mozillalabs.com/public/", function () {
-    if (! grunt.file.isDir("togetherjs.mozillalabs.com")) {
-      grunt.log.writeln("Error: you must check out togetherjs.mozillalabs.com");
+  grunt.registerTask("publish", "Publish to nynjacb.mozillalabs.com/public/", function () {
+    if (! grunt.file.isDir("nynjacb.mozillalabs.com")) {
+      grunt.log.writeln("Error: you must check out nynjacb.mozillalabs.com");
       grunt.log.writeln("Use:");
-      grunt.log.writeln("  $ git clone -b togetherjs.mozillalabs.com git:git@github.com:mozilla/togetherjs.git togetherjs.mozillalabs.com");
-      grunt.log.writeln("  $ cd togetherjs.mozillalabs.com/.git");
-      grunt.log.writeln("  $ echo '[remote \"staging\"]\n\turl = git@heroku.com:togetherjs-staging.git\n\tpush = refs/heads/togetherjs.mozillalabs.com:refs/heads/master\n[remote \"production\"]\n\turl = git@heroku.com:togetherjs.git\n\tpush = refs/heads/togetherjs.mozillalabs.com:refs/heads/master\n' >> config");
-      grunt.fail.fatal("Must checkout togetherjs.mozillalabs.com");
+      grunt.log.writeln("  $ git clone -b nynjacb.mozillalabs.com git:git@github.com:mozilla/nynjacb.git nynjacb.mozillalabs.com");
+      grunt.log.writeln("  $ cd nynjacb.mozillalabs.com/.git");
+      grunt.log.writeln("  $ echo '[remote \"staging\"]\n\turl = git@heroku.com:nynjacb-staging.git\n\tpush = refs/heads/nynjacb.mozillalabs.com:refs/heads/master\n[remote \"production\"]\n\turl = git@heroku.com:nynjacb.git\n\tpush = refs/heads/nynjacb.mozillalabs.com:refs/heads/master\n' >> config");
+      grunt.fail.fatal("Must checkout nynjacb.mozillalabs.com");
       return;
     }
-    var versions = "togetherjs.mozillalabs.com/public/versions";
+    var versions = "nynjacb.mozillalabs.com/public/versions";
     if (! grunt.file.isDir(versions)) {
       grunt.log.writeln("Error: " + versions.cyan + " does not exist");
       grunt.fail.fatal("No versions/ directory");
       return;
     }
-    var tmp = "togetherjs.mozillalabs.com/public_versions_tmp";
+    var tmp = "nynjacb.mozillalabs.com/public_versions_tmp";
     fs.rename(versions, tmp);
-    grunt.file.delete("togetherjs.mozillalabs.com/public");
-    grunt.file.mkdir("togetherjs.mozillalabs.com/public");
+    grunt.file.delete("nynjacb.mozillalabs.com/public");
+    grunt.file.mkdir("nynjacb.mozillalabs.com/public");
     fs.rename(tmp, versions);
     if (! grunt.option("base-url")) {
-      grunt.option("base-url", "https://togetherjs.com");
+      grunt.option("base-url", "https://nynjacb.com");
     }
-    grunt.option("dest", "togetherjs.mozillalabs.com/public");
+    grunt.option("dest", "nynjacb.mozillalabs.com/public");
     grunt.option("exclude-tests", true);
     grunt.option("no-hardlink", true);
     grunt.task.run(["build", "buildsite", "buildaddon"]);
     grunt.task.run(["movecss"]);
     grunt.log.writeln("To actually publish you must do:");
-    grunt.log.writeln("  $ cd togetherjs.mozillalabs.com/");
+    grunt.log.writeln("  $ cd nynjacb.mozillalabs.com/");
     grunt.log.writeln("  $ git add -A");
     grunt.log.writeln("  $ git commit -a -m 'Publish'");
     grunt.log.writeln("  $ git push && git push staging");
   });
 
-  grunt.registerTask("publishversion", "Publish to togetherjs.mozillalabs.com/public/versions/", function () {
-    var version = grunt.option("togetherjs-version");
+  grunt.registerTask("publishversion", "Publish to nynjacb.mozillalabs.com/public/versions/", function () {
+    var version = grunt.option("nynjacb-version");
     if (! version) {
-      grunt.log.error("You must provide a --togetherjs-version=X.Y argument");
-      grunt.fail.fatal("No --togetherjs-version");
+      grunt.log.error("You must provide a --nynjacb-version=X.Y argument");
+      grunt.fail.fatal("No --nynjacb-version");
       return;
     }
-    if (! grunt.file.isDir("togetherjs.mozillalabs.com/public/versions")) {
-      grunt.log.error("The directory togetherjs.mozillalabs.com/public/versions does not exist");
+    if (! grunt.file.isDir("nynjacb.mozillalabs.com/public/versions")) {
+      grunt.log.error("The directory nynjacb.mozillalabs.com/public/versions does not exist");
       grunt.fail.fatal();
       return;
     }
-    var destDir = "togetherjs.mozillalabs.com/public/versions/" + version;
+    var destDir = "nynjacb.mozillalabs.com/public/versions/" + version;
     if (grunt.file.exists(destDir)) {
       grunt.log.error("The directory " + destDir + " already exists");
       grunt.log.error("  Delete it first to re-create version");
       grunt.fail.fatal();
       return;
     }
-    grunt.option("base-url", "https://togetherjs.com/versions/" + version);
+    grunt.option("base-url", "https://nynjacb.com/versions/" + version);
     grunt.option("dest", destDir);
     grunt.option("exclude-tests", true);
     grunt.option("no-hardlink", true);
     grunt.task.run(["build"]);
     grunt.task.run(["movecss"]);
-    var readme = grunt.file.read("togetherjs.mozillalabs.com/public/versions/README.md");
-    readme += "  * [" + version + "](./" + version + "/togetherjs.js)\n";
-    grunt.file.write("togetherjs.mozillalabs.com/public/versions/README.md", readme);
+    var readme = grunt.file.read("nynjacb.mozillalabs.com/public/versions/README.md");
+    readme += "  * [" + version + "](./" + version + "/nynjacb.js)\n";
+    grunt.file.write("nynjacb.mozillalabs.com/public/versions/README.md", readme);
   });
 
   grunt.registerTask("movecss", "Publish generated css files to dest", function () {
     // Can't figure out how to parameterize the less task, hence this lame move
-    ["togetherjs/togetherjs.css", "togetherjs/recorder.css"].forEach(function (css) {
+    ["nynjacb/nynjacb.css", "nynjacb/recorder.css"].forEach(function (css) {
       var src = path.join("build", css);
       var dest = path.join(grunt.option("dest"), css);
       grunt.file.copy(src, dest);
@@ -672,7 +672,7 @@ module.exports = function (grunt) {
         freeport(function(err2, webPort) {
           if (err1 || err2) { return done(err1 || err2); }
 
-          // build togetherjs using these default ports
+          // build nynjacb using these default ports
           grunt.option("base-url", "http://localhost:"+webPort+"/"+TESTDIR+"/");
           grunt.option("hub-url", "http://localhost:"+hubPort);
           grunt.option("no-hardlink", true);
@@ -742,7 +742,7 @@ module.exports = function (grunt) {
   grunt.registerMultiTask("phantom-tests", function() {
     grunt.task.requires('phantom-setup');
     var url = grunt.option('base-url') +
-      "togetherjs/tests/index.html?name=" + this.target;
+      "nynjacb/tests/index.html?name=" + this.target;
     grunt.verbose.writeln("Running tests at: "+url);
 
     // Merge task-specific and/or target-specific options with these defaults.
@@ -753,7 +753,7 @@ module.exports = function (grunt) {
       inject: path.join(__dirname, 'phantomjs', 'bridge.js'),
       //screenshot: true,
       page: {
-        // leave room for the togetherjs sidebar
+        // leave room for the nynjacb sidebar
         viewportSize: { width: 1024, height: 1024 }
       }
     });

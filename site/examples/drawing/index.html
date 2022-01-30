@@ -1,11 +1,11 @@
 {% extends "base.tmpl" %}
-{% block title %} Mozilla Labs : TogetherJS app integration example {% endblock %}
+{% block title %} Mozilla Labs : NynjaCB app integration example {% endblock %}
 {# set enableExample true #}
 {% block configs %}
   <script>
-    var TogetherJSConfig_autoStart = true;
-    var TogetherJSConfig_suppressJoinConfirmation = true;
-    var TogetherJSConfig_dontShowClicks = ":not(canvas"
+    var NynjaCBConfig_autoStart = true;
+    var NynjaCBConfig_suppressJoinConfirmation = true;
+    var NynjaCBConfig_dontShowClicks = ":not(canvas"
   </script>
 {% endblock %}
 {% block body %}
@@ -17,8 +17,8 @@
   <div class="container">
     <section class="body-content row" id="sketchapp" style="margin-left: 0px; margin-right: 0px;">
         <h1 style="margin-bottom: 20px">Drawing Example</h1>
-        <a class="pull-right tjsbutton" onclick="TogetherJS(this); return false;">
-          <img src="https://togetherjs.com/images/start-togetherjs-blue.png" style="width: 125px;"></img>
+        <a class="pull-right tjsbutton" onclick="NynjaCB(this); return false;">
+          <img src="https://nynjacb.com/images/start-nynjacb-blue.png" style="width: 125px;"></img>
         </a>
         <p class="pull-left" style="margin-bottom: 20px">This is a simple drawing example.  Try drawing something with a friend in the canvas below!  Check out this code on <a href="http://jsfiddle.net/5f8FL/1/" target="_blank">JSFiddle  here</a>.</p>
         <div class="btn-group btn-group-justified" style="margin-left: auto; margin-right: auto;">

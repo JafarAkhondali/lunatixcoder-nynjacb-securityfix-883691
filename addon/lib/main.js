@@ -10,19 +10,19 @@ const { Page } = require("page-worker");
 const simplePrefs = require('simple-prefs');
 
 var button = widgets.Widget({
-  id: "togetherjs-starter",
-  label: "Start TogetherJS",
+  id: "nynjacb-starter",
+  label: "Start NynjaCB",
   contentURL: data.url("button.html"),
   contentScriptFile: data.url("button.js"),
   onClick: function () {
-    console.log("Starting TogetherJS because of click");
-    startTogetherJS();
+    console.log("Starting NynjaCB because of click");
+    startNynjaCB();
   },
   width: 48
 });
 
 StartupPanel({
-  name: "TogetherJS",
+  name: "NynjaCB",
   contentURL: data.url("startup-help.html")
 });
 
@@ -51,15 +51,15 @@ simplePrefs.on("autoDomains", updateAutoDomains);
 updateAutoDomains();
 
 
-function startTogetherJS(shareId) {
+function startNynjaCB(shareId) {
   var tab = tabs.activeTab;
-  if (tab.togetherjsCloser) {
-    tab.togetherjsCloser();
+  if (tab.nynjacbCloser) {
+    tab.nynjacbCloser();
     return;
   }
-  tab.togetherjsCloser = function () {
-    tab.togetherjsCloser = null;
-    button.port.emit("TogetherJSOff");
+  tab.nynjacbCloser = function () {
+    tab.nynjacbCloser = null;
+    button.port.emit("NynjaCBOff");
     tab.removeListener("ready", attachWorker);
   };
   var worker;
@@ -70,11 +70,11 @@ function startTogetherJS(shareId) {
       ]
     });
     worker.port.on("Close", function () {
-      tab.togetherjsCloser();
+      tab.nynjacbCloser();
     });
-    worker.port.emit("Config", {url: simplePrefs.prefs.togetherjsJs, hubBase: simplePrefs.prefs.hubBase, shareId: shareId || null});
+    worker.port.emit("Config", {url: simplePrefs.prefs.nynjacbJs, hubBase: simplePrefs.prefs.hubBase, shareId: shareId || null});
   }
-  button.port.emit("TogetherJSOn");
+  button.port.emit("NynjaCBOn");
   tab.on("ready", attachWorker);
   attachWorker();
 }
@@ -84,17 +84,17 @@ tabs.on("open", watchTab);
 
 function watchTab(tab) {
   tab.on("ready", function () {
-    if (tabs.activeTab == tab && tab.url.indexOf("#&togetherjs") != -1) {
-      console.log("Starting TogetherJS on share link", tab.url);
-      startTogetherJS();
+    if (tabs.activeTab == tab && tab.url.indexOf("#&nynjacb") != -1) {
+      console.log("Starting NynjaCB on share link", tab.url);
+      startNynjaCB();
     }
-    if (tabs.activeTab == tab && ! tab.togetherjsCloser) {
+    if (tabs.activeTab == tab && ! tab.nynjacbCloser) {
       var started = false;
       autoDomains.forEach(function (matcher) {
         console.log("matcher", matcher, matcher.domain);
         if ((! started) && tab.url.search(matcher.domain) != -1) {
-          console.log("Start TogetherJS autoDomain");
-          startTogetherJS(matcher.shareId);
+          console.log("Start NynjaCB autoDomain");
+          startNynjaCB(matcher.shareId);
           started = true;
         }
       });
@@ -107,9 +107,9 @@ for (var i=0; i<tabs.length; i++) {
 }
 
 tabs.on("activate", function () {
-  if (tabs.activeTab.togetherjsCloser) {
-    button.port.emit("TogetherJSOn");
+  if (tabs.activeTab.nynjacbCloser) {
+    button.port.emit("NynjaCBOn");
   } else {
-    button.port.emit("TogetherJSOff");
+    button.port.emit("NynjaCBOff");
   }
 });

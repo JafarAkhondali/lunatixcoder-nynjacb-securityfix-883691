@@ -6,7 +6,7 @@ dump.rdb
 app/http/public/recorder.css
 build
 test-build
-togetherjs.mozillalabs.com
-addon/togetherjs.xpi
-togetherjs/togetherjs.css
-togetherjs/togetherjsPackage.js
+nynjacb.mozillalabs.com
+addon/nynjacb.xpi
+nynjacb/nynjacb.css
+nynjacb/nynjacbPackage.js

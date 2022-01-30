@@ -1,13 +1,13 @@
 {% extends "base.tmpl" %}
-{% block title %}TogetherJS Bookmarklet{% endblock %}
+{% block title %}NynjaCB Bookmarklet{% endblock %}
 {% block styles %}
 
 <script>
 
 function bookmarklet() {
-  var s = "window._TogetherJSBookmarklet = true;";
+  var s = "window._NynjaCBBookmarklet = true;";
   s += "s=document.createElement('script');";
-  s += "s.src=" + JSON.stringify(TogetherJS.baseUrl + "/togetherjs.js") + ";";
+  s += "s.src=" + JSON.stringify(NynjaCB.baseUrl + "/nynjacb.js") + ";";
   s += "document.head.appendChild(s);";
   s = "(function () {" + s + "})();void(0)";
   return "javascript:" + encodeURIComponent(s);
@@ -26,14 +26,14 @@ window.addEventListener("load", function () {
 
 <div class="container">
 
-<h1>TogetherJS Bookmarklet</h1>
+<h1>NynjaCB Bookmarklet</h1>
 
 <p>
   To use this bookmarklet, drag the button below to your bookmark toolbar:
 </p>
 
 <p>
-  <a id="towtruck-bookmarklet" class="button fade-half" href="#">Start TogetherJS</a>
+  <a id="towtruck-bookmarklet" class="button fade-half" href="#">Start NynjaCB</a>
 </p>
 
 </div>

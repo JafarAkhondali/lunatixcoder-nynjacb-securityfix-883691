@@ -1,12 +1,12 @@
-Thanks for your interest in contributing to TogetherJS!
+Thanks for your interest in contributing to NynjaCB!
 
 If you found a bug, if at all possible give us a URL where we can try
-TogetherJS.  Don't worry about tags or milestones or assigning the
+NynjaCB.  Don't worry about tags or milestones or assigning the
 ticket.  But a URL is extremely helpful!
 
 ## Contributing
 
-The [Contributing](https://togetherjs.com/docs/contributing.html)
+The [Contributing](https://nynjacb.com/docs/contributing.html)
 document on the site gives some more information.  Some relevant
 points:
 
@@ -18,9 +18,9 @@ points:
   likely that people's contributions will conflict.
 
 * Anything in the
-  [Blue Sky](https://github.com/mozilla/togetherjs/issues?milestone=23&page=1&state=open)
+  [Blue Sky](https://github.com/mozilla/nynjacb/issues?milestone=23&page=1&state=open)
   you are likely to find something that we're interested in having in
-  TogetherJS, but that we aren't working on.
+  NynjaCB, but that we aren't working on.
 
 * If you have an idea of your own you'd like to implement, please open
   a ticket describing it.  That will let other people know you are
@@ -30,7 +30,7 @@ points:
 ## Where to start?
 
 You should look at the
-[Contribution Wanted](https://github.com/mozilla/togetherjs/issues?labels=contribution-wanted&milestone=&page=1&state=open)
+[Contribution Wanted](https://github.com/mozilla/nynjacb/issues?labels=contribution-wanted&milestone=&page=1&state=open)
 tag to see tickets that fall into two categories:
 
 1. A good introductory task to get started on.

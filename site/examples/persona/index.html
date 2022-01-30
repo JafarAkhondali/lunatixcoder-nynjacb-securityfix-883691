@@ -1,5 +1,5 @@
 {% extends "base.tmpl" %}
-{% block title %} Mozilla Labs : TogetherJS app integration example {% endblock %}
+{% block title %} Mozilla Labs : NynjaCB app integration example {% endblock %}
 {# set enableExample true #}
 {% block body %}
 
@@ -8,10 +8,10 @@
 
 <h1>Identity/Persona Example</h1>
 
-<p>TogetherJS will pick up your login information (and gravatar):
+<p>NynjaCB will pick up your login information (and gravatar):
 <button id="login"><img src="https://developer.mozilla.org/files/3969/plain_sign_in_blue.png"></button>
 <button id="logout" style="display: none">logout</button>
-<button onclick="TogetherJS(this); return false">Collaborate</button>
+<button onclick="NynjaCB(this); return false">Collaborate</button>
 </p>
 
 <div>
@@ -51,14 +51,14 @@ $(function () {
       $("#logout").text("Logged in: " + USER);
       $("#login").hide();
       $("#logout").show();
-      TogetherJS.refreshUserData();
+      NynjaCB.refreshUserData();
     },
     onlogout: function () {
       USER = null;
       $("#login").show();
       $("#logout").hide();
-      if (TogetherJS.require) {
-        TogetherJS.require("session").close();
+      if (NynjaCB.require) {
+        NynjaCB.require("session").close();
       }
     }
   });
@@ -71,11 +71,11 @@ function gravatar(email, options) {
   return "https://www.gravatar.com/avatar/" + md5 + options;
 }
 
-TogetherJS.config("getUserName", function () {
+NynjaCB.config("getUserName", function () {
   return USER;
 });
 
-TogetherJS.config("getUserAvatar", function () {
+NynjaCB.config("getUserAvatar", function () {
   if (! USER) {
     return null;
   }

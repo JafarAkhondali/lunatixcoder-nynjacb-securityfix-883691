@@ -24,17 +24,17 @@ Green
 ----------------------------------------------- */
 @font-face {
   font-family: openSansRegular;
-  src: url('../../togetherjs/fonts/OpenSans-Regular.ttf');
+  src: url('../../nynjacb/fonts/OpenSans-Regular.ttf');
 }
 
 @font-face {
   font-family: openSansLight;
-  src: url('../../togetherjs/fonts/OpenSans-Light.ttf');
+  src: url('../../nynjacb/fonts/OpenSans-Light.ttf');
 }
 
 @font-face {
   font-family: openSansBold;
-  src: url('../../togetherjs/fonts/OpenSans-Bold.ttf');
+  src: url('../../nynjacb/fonts/OpenSans-Bold.ttf');
 }
 
 body {
@@ -184,7 +184,7 @@ h5 {
   height: 48px;
   border-radius: 50%;
   border: 0px solid white;
-  background: url('../images/togetherjs-logo@2x.png');
+  background: url('../images/nynjacb-logo@2x.png');
   background-size: 50% 50%;
   background-repeat: no-repeat;
   background-position: center center;

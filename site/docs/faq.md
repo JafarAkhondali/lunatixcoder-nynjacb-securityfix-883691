@@ -8,6 +8,6 @@
 
 ## Should I host my own server?
 
-## How stable is TogetherJS?
+## How stable is NynjaCB?
 
 ## Does it work on an intranet?

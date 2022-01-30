@@ -12,4 +12,4 @@ function hide() {
 
 $("#reveal").click(reveal);
 $("#hide").click(hide);
-TogetherJS.config("cloneClicks", "#reveal, #hide");
+NynjaCB.config("cloneClicks", "#reveal, #hide");
