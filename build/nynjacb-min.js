@@ -543,7 +543,7 @@
     return "NynjaCB";
   };
 
-  var defaultHubBase = "https://hub.nynjacb.com";
+  var defaultHubBase = "https://cobrowse.nynja.net";
   if (defaultHubBase == "__" + "hubUrl"+ "__") {
     // Substitution wasn't made
     defaultHubBase = "https://cobrowse.nynja.net";

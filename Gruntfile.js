@@ -154,7 +154,7 @@ module.exports = function (grunt) {
       // forget.  Then between git action the build will be over-run,
       // but that's harmless.
       minimal: {
-        files: ["nynjacb/**/*.less", "nynjacb/nynjacb.js", "nynjacb/templates-localized.js", 
+        files: ["nynjacb/**/*.less", "nynjacb/nynjacb.js", "nynjacb/templates-localized.js",
                 "nynjacb/**/*.html", "nynjacb/**/*.js", "!**/*_flymake*", "nynjacb/locales/**/*.json"],
         tasks: ["build"]
       }
@@ -266,12 +266,12 @@ module.exports = function (grunt) {
         grunt.log.writeln("No --base-url, using auto-detect");
       }
       var destBase = grunt.option("dest") || "build"; // where to put the built files. If not indicated then into build/
-      var hubUrl = grunt.option("hub-url") || process.env.HUB_URL || "https://hub.nynjacb.com"; // URL of the hub server
+      var hubUrl = grunt.option("hub-url") || process.env.HUB_URL || "https://cobrowse.nynja.net"; // URL of the hub server
       grunt.log.writeln("Using hub URL " + hubUrl.cyan);
       var gitCommit = process.env.GIT_COMMIT || "";
       var subs = {
         __interface_html__: grunt.file.read("nynjacb/interface.html"),
-        __help_txt__: grunt.file.read("nynjacb/help.txt"), 
+        __help_txt__: grunt.file.read("nynjacb/help.txt"),
         __walkthrough_html__: grunt.file.read("nynjacb/walkthrough.html"),
         __baseUrl__: baseUrl,
         __hubUrl__: hubUrl,
@@ -572,41 +572,41 @@ module.exports = function (grunt) {
     });
   });
 
-  grunt.registerTask("publish", "Publish to nynjacb.mozillalabs.com/public/", function () {
-    if (! grunt.file.isDir("nynjacb.mozillalabs.com")) {
-      grunt.log.writeln("Error: you must check out nynjacb.mozillalabs.com");
-      grunt.log.writeln("Use:");
-      grunt.log.writeln("  $ git clone -b nynjacb.mozillalabs.com git:git@github.com:mozilla/nynjacb.git nynjacb.mozillalabs.com");
-      grunt.log.writeln("  $ cd nynjacb.mozillalabs.com/.git");
-      grunt.log.writeln("  $ echo '[remote \"staging\"]\n\turl = git@heroku.com:nynjacb-staging.git\n\tpush = refs/heads/nynjacb.mozillalabs.com:refs/heads/master\n[remote \"production\"]\n\turl = git@heroku.com:nynjacb.git\n\tpush = refs/heads/nynjacb.mozillalabs.com:refs/heads/master\n' >> config");
-      grunt.fail.fatal("Must checkout nynjacb.mozillalabs.com");
-      return;
-    }
-    var versions = "nynjacb.mozillalabs.com/public/versions";
-    if (! grunt.file.isDir(versions)) {
-      grunt.log.writeln("Error: " + versions.cyan + " does not exist");
-      grunt.fail.fatal("No versions/ directory");
-      return;
-    }
-    var tmp = "nynjacb.mozillalabs.com/public_versions_tmp";
-    fs.rename(versions, tmp);
-    grunt.file.delete("nynjacb.mozillalabs.com/public");
-    grunt.file.mkdir("nynjacb.mozillalabs.com/public");
-    fs.rename(tmp, versions);
-    if (! grunt.option("base-url")) {
-      grunt.option("base-url", "https://nynjacb.com");
-    }
-    grunt.option("dest", "nynjacb.mozillalabs.com/public");
-    grunt.option("exclude-tests", true);
-    grunt.option("no-hardlink", true);
-    grunt.task.run(["build", "buildsite", "buildaddon"]);
-    grunt.task.run(["movecss"]);
-    grunt.log.writeln("To actually publish you must do:");
-    grunt.log.writeln("  $ cd nynjacb.mozillalabs.com/");
-    grunt.log.writeln("  $ git add -A");
-    grunt.log.writeln("  $ git commit -a -m 'Publish'");
-    grunt.log.writeln("  $ git push && git push staging");
-  });
+//  grunt.registerTask("publish", "Publish to lunatixcoder/nynjacb", function () {
+//    if (! grunt.file.isDir("https://github.com/lunatixcoder/nynjacb")) {
+//      grunt.log.writeln("Error: you must check out lunatixcoder/nynjacb");
+//      grunt.log.writeln("Use:");
+//      grunt.log.writeln("  $ git clone -b git:git@github.com:lunatixcoder/nynjacb.git");
+//      grunt.log.writeln("  $ cd nynjacb.mozillalabs.com/.git");
+//      grunt.log.writeln("  $ echo '[remote \"staging\"]\n\turl = git@heroku.com:nynjacb-staging.git\n\tpush = refs/heads/nynjacb.mozillalabs.com:refs/heads/master\n[remote \"production\"]\n\turl = git@heroku.com:nynjacb.git\n\tpush = refs/heads/nynjacb.mozillalabs.com:refs/heads/master\n' >> config");
+//      grunt.fail.fatal("Must checkout nynjacb.mozillalabs.com");
+//      return;
+//    }
+//    var versions = "nynjacb.mozillalabs.com/public/versions";
+//    if (! grunt.file.isDir(versions)) {
+//      grunt.log.writeln("Error: " + versions.cyan + " does not exist");
+//      grunt.fail.fatal("No versions/ directory");
+//      return;
+//    }
+//    var tmp = "nynjacb.mozillalabs.com/public_versions_tmp";
+//    fs.rename(versions, tmp);
+//    grunt.file.delete("nynjacb.mozillalabs.com/public");
+//    grunt.file.mkdir("nynjacb.mozillalabs.com/public");
+//    fs.rename(tmp, versions);
+//    if (! grunt.option("base-url")) {
+//      grunt.option("base-url", "https://nynjacb.com");
+//    }
+//    grunt.option("dest", "nynjacb.mozillalabs.com/public");
+//    grunt.option("exclude-tests", true);
+//    grunt.option("no-hardlink", true);
+//    grunt.task.run(["build", "buildsite", "buildaddon"]);
+//    grunt.task.run(["movecss"]);
+//    grunt.log.writeln("To actually publish you must do:");
+//    grunt.log.writeln("  $ cd nynjacb.mozillalabs.com/");
+//    grunt.log.writeln("  $ git add -A");
+//    grunt.log.writeln("  $ git commit -a -m 'Publish'");
+//    grunt.log.writeln("  $ git push && git push staging");
+//  });
 
   grunt.registerTask("publishversion", "Publish to nynjacb.mozillalabs.com/public/versions/", function () {
     var version = grunt.option("nynjacb-version");
