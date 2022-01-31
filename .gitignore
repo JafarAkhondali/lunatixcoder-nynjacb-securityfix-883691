@@ -8,5 +8,4 @@ build
 test-build
 nynjacb.mozillalabs.com
 addon/nynjacb.xpi
-nynjacb/nynjacb.css
 nynjacb/nynjacbPackage.js
