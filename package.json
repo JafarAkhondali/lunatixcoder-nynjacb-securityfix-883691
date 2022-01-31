@@ -2,11 +2,11 @@
   "name": "nynjacb",
   "version": "0.1.0",
   "main": "hub/server.js",
-  "description": "Collaborative help system",
+  "description": "Cobrowse server",
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/NynaMC/nynjacb.git"
+    "url": "https://github.com/lunatixcoder/nynjacb.git"
   },
   "dependencies": {
     "ejs": "~2.5.5",
