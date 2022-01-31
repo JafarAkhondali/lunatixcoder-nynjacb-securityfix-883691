@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>NynjaCB recorder</title>
+    <script>
+      NynjaCBConfig_noAutoStart = true;
+    </script>
+    <script src="../nynjacb.js"></script>
+    <script>
+      var config = NynjaCB._extend(NynjaCB.requireConfig);
+      config.deps = ["recorder"];
+      config.callback = function () {
+        console.log("got back");
+        require({context: "nynjacb"})(["recorder"], function (recorder) {
+          recorder.start({
+            baseUrl: NynjaCB.baseUrl,
+            defaultHubBase: NynjaCB.config.get("hubBase")
+          });
+        });
+      };
+      require = config;
+      console.log("required");
+    </script>
+    <script src="./libs/require.js"></script>
+    <link rel="stylesheet" href="recorder.css">
+  </head>
+  <body>
+
+<div id="connection-status">
+  <span id="not-connected" data-toggles="#connection-status span">Not Connected</span>
+  <span id="connected" data-toggles="#connection-status span" style="display: none">Connected</span>
+  <span id="no-session-id" data-toggles="#connection-status span" style="display: none">There's no <code>#&amp;NynjaCB=SESSION_ID</code> in the URL.</span>
+  <button id="restart">Restart recording</button>
+  <button id="select">Select record</button>
+</div>
+
+<div>
+  <textarea id="record">/* NynjaCB session starts */
+
+</textarea>
+</div>
+
+
+  </body>
+</html>

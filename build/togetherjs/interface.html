@@ -1,0 +1,548 @@
+nynjacb<% /*
+   This is basically all the markup and interface for NynjaCB.
+   Note all links should be like http://localhost:8080/nynjacb/*
+   these links are rewritten with the location where NynjaCB was deployed.
+
+   This file is inlined into nynjacb/templates.js
+*/ %>
+<div id="nynjacb-container" class="nynjacb">
+
+  <!-- This is the main set of buttons: -->
+  <div id="nynjacb-dock" class="nynjacb-dock-right">
+    <div id="nynjacb-dock-anchor" title="{{ gettext('Move the dock') }}">
+      <span id="nynjacb-dock-anchor-horizontal">
+        <img src="http://localhost:8080/nynjacb/images/icn-handle-circle@2x.png" alt="drag">
+      </span>
+      <span id="nynjacb-dock-anchor-vertical">
+        <img src="http://localhost:8080/nynjacb/images/icn-handle-circle@2x.png" alt="drag">
+      </span>
+    </div>
+    <div id="nynjacb-buttons">
+      <div style="display: none">
+        <button id="nynjacb-template-dock-person" class="nynjacb-button nynjacb-dock-person">
+          <div class="nynjacb-tooltip nynjacb-dock-person-tooltip">
+            <span class="nynjacb-person-name"></span>
+            <span class="nynjacb-person-tooltip-arrow-r"></span>
+          </div>
+          <div class="nynjacb-person nynjacb-person-status-overlay"></div>
+        </button>
+      </div>
+      <button id="nynjacb-profile-button" class="nynjacb-button" title="{{ gettext('This is you') }}">
+        <div class="nynjacb-person nynjacb-person-self"></div>
+        <div id="nynjacb-profile-arrow"></div>
+      </button>
+      <button id="nynjacb-share-button" class="nynjacb-button" title="{{ gettext('Add a friend') }}"></button>
+      <button id="nynjacb-audio-button" class="nynjacb-button" title="{{ gettext('Turn on microphone')}}">
+        <span id="nynjacb-audio-unavailable" class="nynjacb-audio-set" data-toggles=".nynjacb-audio-set">
+        </span>
+        <span id="nynjacb-audio-ready" class="nynjacb-audio-set" data-toggles=".nynjacb-audio-set" style="display: none">
+        </span>
+        <span id="nynjacb-audio-outgoing" class="nynjacb-audio-set" data-toggles=".nynjacb-audio-set" style="display: none">
+        </span>
+        <span id="nynjacb-audio-incoming" class="nynjacb-audio-set" data-toggles=".nynjacb-audio-set" style="display: none">
+        </span>
+        <span id="nynjacb-audio-active" class="nynjacb-audio-set" data-toggles=".nynjacb-audio-set" style="display: none">
+        </span>
+        <span id="nynjacb-audio-muted" class="nynjacb-audio-set" data-toggles=".nynjacb-audio-set" style="display: none">
+        </span>
+        <span id="nynjacb-audio-error" class="nynjacb-audio-set" data-toggles=".nynjacb-audio-set" style="display: none">
+        </span>
+      </button>
+      <button id="nynjacb-chat-button" class="nynjacb-button" title="{{ gettext('Chat') }}"></button>
+      <div id="nynjacb-dock-participants"></div>
+    </div>
+  </div>
+
+  <!-- The window for editing the avatar: -->
+  <div id="nynjacb-avatar-edit" class="nynjacb-modal"
+       style="display: none">
+    <header> {{ gettext('Update avatar') }} </header>
+    <section>
+      <div class="nynjacb-avatar-preview nynjacb-person nynjacb-person-self"></div>
+      <div id="nynjacb-avatar-buttons">
+        <input type="file" class="nynjacb-upload-avatar">
+        <!--<button id="nynjacb-upload-avatar" class="nynjacb-primary">Upload a picture</button>-->
+        <!--<button id="nynjacb-camera-avatar" class="nynjacb-default">Take a picture</button>-->
+      </div>
+    </section>
+    <section class="nynjacb-buttons">
+      <button class="nynjacb-cancel nynjacb-dismiss">{{ gettext('Cancel') }}</button>
+      <span class="nynjacb-alt-text">{{ gettext('or') }}</span>
+      <button class="nynjacb-avatar-save nynjacb-primary">{{ gettext('Save') }}</button>
+    </section>
+  </div>
+
+  <!-- The window for sharing the link: -->
+  <div id="nynjacb-share" class="nynjacb-window"
+       data-bind-to="#nynjacb-share-button" style="display: none">
+    <header> {{ gettext('Invite a friend') }} </header>
+    <section>
+      <div class="nynjacb-not-mobile">
+        <p>{{ gettext('Copy and paste this link over IM or email:') }}</p>
+        <input type="text" class="nynjacb-share-link">
+      </div>
+      <div class="nynjacb-only-mobile">
+        <p>{{ gettext('Copy and paste this link over IM or email:') }}</p>
+        <input type="text" class="nynjacb-share-link">
+        <!-- <a class="nynjacb-share-link" href="#">Press your thumb here.</a> -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Participant Full List view template: -->
+  <div id="nynjacb-participantlist" class="nynjacb-window"
+       data-bind-to="#nynjacb-participantlist-button" style="display: none">
+    <header> {{ gettext('Participants') }} </header>
+    <section>
+      <div class="nynjacb-not-mobile">
+        <ul>
+          <li id="nynjacb-participant-item">
+            <img class="nynjacb-person nynjacb-person-small" src="http://localhost:8080/nynjacb/images/btn-menu-change-avatar.png">
+            <span class="tj-name nynjacb-person-name">NAME</span>
+            <span class="tj-status">&#9679;</span>
+            <p class="tj-urllocation">{{ gettext('Currently at:') }} <a class="nynjacb-person-url nynjacb-person-url-title" href="">http://www.location.comwww.location.comwww.location.comasdfsafd</a></p>
+            <p class="tj-follow">{{ gettext('Follow:') }}
+              <label class="nynjacb-follow-question" for="nynjacb-person-status-follow">
+                <input type="checkbox" id="nynjacb-person-status-follow">
+              </label>
+            </p>
+            <section class="nynjacb-buttons">
+              <!-- Displayed when the peer is at a different URL: -->
+              <div class="nynjacb-different-url">
+                <a class="nynjacb-nudge nynjacb-default tj-btn-sm">{{ gettext('Nudge them') }}</a>
+                <a href="#" class="nynjacb-follow nynjacb-person-url nynjacb-primary tj-btn-sm">{{ gettext('Join them') }}</a>
+              </div>
+              <!-- Displayed when the peer is at your same URL: -->
+              <div class="nynjacb-same-url" style="display: none">
+                <span class="nynjacb-person-name"></span> {{ gettext('is on the same page as you.')}}
+              </div>
+            </section>
+          </li>
+        </ul>
+    </section>
+  </div>
+
+  <!-- Participant detail template: -->
+  <div id="nynjacb-template-participant-window" class="nynjacb-window" style="display: none">
+    <header><div class="nynjacb-person nynjacb-person-small"></div><span class="nynjacb-person-name"></span></header>
+
+    <section class="nynjacb-participant-window-main">
+      <p class="nynjacb-participant-window-row"><strong>{{ gettext('Role:') }}</strong>
+        <span class="nynjacb-person-role"></span>
+      </p>
+
+      <p class="nynjacb-participant-window-row"><strong>{{ gettext('Currently at:') }}</strong>
+        <a class="nynjacb-person-url nynjacb-person-url-title"></a>
+      </p>
+
+      <p class="nynjacb-participant-window-row"><strong>{{ gettext('Status:') }}</strong>
+        <span class="nynjacb-person-status"></span>
+      </p>
+
+      <p class="nynjacb-participant-window-row"><strong class="nynjacb-float-left">{{ gettext('Follow this participant:') }}</strong>
+        <label class="nynjacb-follow-question nynjacb-float-left" for="nynjacb-person-status-follow">
+          <input type="checkbox" id="nynjacb-person-status-follow">
+        </label>
+        <span class="nynjacb-clear"></span>
+      </p>
+
+    </section>
+
+    <section class="nynjacb-buttons">
+      <!-- Displayed when the peer is at a different URL: -->
+      <div class="nynjacb-different-url">
+        <a class="nynjacb-nudge nynjacb-default">{{ gettext('Nudge them') }}</a>
+        <a href="#" class="nynjacb-follow nynjacb-person-url nynjacb-primary">{{ gettext('Join them') }}</a>
+      </div>
+      <!-- Displayed when the peer is at your same URL: -->
+      <div class="nynjacb-same-url" style="display: none">
+        <span class="nynjacb-person-name"></span> {{ gettext('is on the same page as you.') }}
+      </div>
+    </section>
+  </div>
+
+  <!-- The chat screen: -->
+  <div id="nynjacb-chat" class="nynjacb-window" data-bind-to="#nynjacb-chat-button"
+       style="display: none">
+    <header> {{ gettext('Chat') }} </header>
+    <section class="nynjacb-subtitle">
+      <div id="nynjacb-chat-participants" data-toggles="#nynjacb-chat-no-participants" style="display: none">
+        <span id="nynjacb-chat-participant-list"></span>
+        &amp; {{ gettext('You') }}
+      </div>
+      <div id="nynjacb-chat-no-participants" data-toggles="#nynjacb-chat-participants">
+        {{ gettext('No one else is here.') }}
+      </div>
+    </section>
+
+    <div style="display: none">
+
+      <!-- Template for one message: -->
+      <div id="nynjacb-template-chat-message" class="nynjacb-chat-item nynjacb-chat-message">
+        <div class="nynjacb-person"></div>
+        <div class="nynjacb-timestamp"><span class="nynjacb-time">HH:MM</span> <span class="nynjacb-ampm">AM/PM</span></div>
+        <div class="nynjacb-person-name-abbrev"></div>
+        <div class="nynjacb-chat-content nynjacb-sub-content"></div>
+      </div>
+
+      <!-- Template for when a person leaves: -->
+      <div id="nynjacb-template-chat-left" class="nynjacb-chat-item nynjacb-chat-left-item">
+        <div class="nynjacb-person"></div>
+        <div class="nynjacb-ifnot-declinedJoin">
+          <div class="nynjacb-inline-text"><span class="nynjacb-person-name"></span> {{ gettext('left the session.') }}</div>
+        </div>
+        <div class="nynjacb-if-declinedJoin">
+          <div class="nynjacb-inline-text"><span class="nynjacb-person-name"></span> {{ gettext('declined to join the session.')}}</div>
+        </div>
+        <div class="nynjacb-clear"></div>
+      </div>
+
+      <!-- Template when a person joins the session: -->
+      <div id="nynjacb-template-chat-joined" class="nynjacb-chat-item nynjacb-chat-join-item">
+        <div class="nynjacb-person"></div>
+        <div class="nynjacb-inline-text"><span class="nynjacb-person-name"></span> {{ gettext('joined the session.') }}</div>
+        <div class="nynjacb-clear"></div>
+      </div>
+
+      <!-- Template for system-derived messages: -->
+      <div id="nynjacb-template-chat-system" class="nynjacb-chat-item">
+        <span class="nynjacb-chat-content nynjacb-sub-content"></span>
+      </div>
+
+      <!-- Template when a person joins the session: -->
+      <!-- <div id="nynjacb-template-chat-joined" class="nynjacb-chat-item nynjacb-chat-join-item">
+        <div class="nynjacb-person"></div>
+        <div class="nynjacb-inline-text"><span class="nynjacb-person-name"></span> joined the session.</div>
+        <div class="nynjacb-clear"></div>
+      </div> -->
+
+      <!-- Template for when someone goes to a new URL: -->
+      <div id="nynjacb-template-url-change" class="nynjacb-chat-item nynjacb-chat-url-change">
+        <div class="nynjacb-person"></div>
+        <div class="nynjacb-inline-text">
+          <div class="nynjacb-if-sameUrl">
+            <span class="nynjacb-person-name"></span>
+            {{ gettext('is on the same page as you.') }}
+          </div>
+          <div class="nynjacb-ifnot-sameUrl">
+            <span class="nynjacb-person-name"></span>
+            {{ gettext('has gone to:') }} <a href="#" class="nynjacb-person-url nynjacb-person-url-title" target="_self"></a>
+            <section class="nynjacb-buttons nynjacb-buttons-notification-diff-url">
+              <!-- Displayed when the peer is at a different URL: -->
+              <div class="nynjacb-different-url nynjacb-notification-diff-url">
+                <a class="nynjacb-nudge nynjacb-default">{{ gettext('Nudge them') }}</a>
+                <a href="#" class="nynjacb-follow nynjacb-person-url nynjacb-primary">{{ gettext('Join them') }}</a>
+              </div>
+            </section>
+
+            <!-- <div>
+              <a class="nynjacb-nudge nynjacb-secondary">Nudge them</a>
+              <a href="" class="nynjacb-person-url nynjacb-follow nynjacb-primary">Join them</a>
+            </div> -->
+
+          </div>
+        </div>
+        <div class="nynjacb-clear"></div>
+      </div>
+    </div>
+
+    <section id="nynjacb-chat-messages">
+      <!-- FIX ME// need to have some dialogue that says something like - There are no chats yet! -->
+    </section>
+    <section id="nynjacb-chat-input-box">
+      <textarea id="nynjacb-chat-input" placeholder="{{ gettext('Type your message here') }}"></textarea>
+    </section>
+  </div>
+
+  <!-- this is a kind of warning popped up when you (successfully) start RTC: -->
+  <div id="nynjacb-rtc-info" class="nynjacb-window"
+       data-bind-to="#nynjacb-audio-button"
+       style="display: none">
+
+    <header> {{ gettext('Audio Chat') }} </header>
+    <section>
+      <p>
+        {{ gettext('Activate your <strong>browser microphone</strong> near your URL bar above.') }}
+      </p>
+      <p>
+        {{ gettext('Talking on your microphone through your web browser is an experimental feature.') }}
+      </p>
+      <p>
+        {{ gettext('Read more about Audio Chat') }} <a href="https://github.com/mozilla/nynjacb/wiki/About-Audio-Chat-and-WebRTC" target="_blank">{{ gettext('here') }}</a>.
+      </p>
+    </section>
+
+    <section class="nynjacb-buttons">
+      <label for="nynjacb-rtc-info-dismiss" style="display: inline;">
+        <input class="nynjacb-dont-show-again" id="nynjacb-rtc-info-dismiss" type="checkbox">
+        {{ gettext('Don\'t show again.') }}
+      </label>
+      <button class="nynjacb-default nynjacb-dismiss" type="button">{{ gettext('Close') }}</button>
+    </section>
+  </div>
+
+  <!-- this is popped up when you hit the audio button, but RTC isn't
+  supported: -->
+  <div id="nynjacb-rtc-not-supported" class="nynjacb-window"
+       data-bind-to="#nynjacb-audio-button"
+       style="display: none">
+    <header> {{ gettext('Audio Chat') }} </header>
+
+    <section>
+      <p>{{ gettext('Audio chat requires you to use a <a href=\'https://github.com/mozilla/nynjacb/wiki/About-Audio-Chat-and-WebRTC\' target=\'_blank\'>newer browser</a>!') }}</p>
+      <p>
+        {{ gettext('Live audio chat requires a newer (or different) browser than you\'re using.') }}
+      </p>
+      <p>
+        {{ gettext('See <a href=\'https://github.com/mozilla/nynjacb/wiki/About-Audio-Chat-and-WebRTC\' target=\'_blank\'>this page</a>for more information and a list of supported browsers.') }}
+      </p>
+    </section>
+
+    <section class="nynjacb-buttons">
+      <div class="nynjacb-rtc-dialog-btn">
+        <button class="nynjacb-default nynjacb-dismiss" type="button">{{ gettext('Close') }}</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- The popup when a chat message comes in and the #nynjacb-chat window isn't open -->
+  <div id="nynjacb-chat-notifier" class="nynjacb-notification"
+       data-bind-to="#nynjacb-chat-button"
+       style="display: none">
+    <img src="http://localhost:8080/nynjacb/images/notification-nynjacb-logo.png" class="nynjacb-notification-logo" alt="">
+    <img src="http://localhost:8080/nynjacb/images/notification-btn-close.png" class="nynjacb-notification-closebtn nynjacb-dismiss" alt="[close]">
+    <section id="nynjacb-chat-notifier-message">
+    </section>
+  </div>
+
+  <!-- The menu when you click on the profile: -->
+  <div id="nynjacb-menu" class="nynjacb-menu" style="display: none">
+    <div class="nynjacb-menu-item nynjacb-menu-disabled" id="nynjacb-menu-profile">
+      <img id="nynjacb-menu-avatar">
+      <span class="nynjacb-person-name-self" id="nynjacb-self-name-display" data-toggles="#nynjacb-menu .nynjacb-self-name">[nickname]</span>
+      <input class="nynjacb-self-name" type="text" data-toggles="#nynjacb-self-name-display" style="display: none" placeholder="{{ gettext("Enter your name") }}">
+    </div>
+    <div class="nynjacb-menu-hr-avatar"></div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-update-name"><img src="http://localhost:8080/nynjacb/images/button-pencil.png" alt=""> {{ gettext('Update your name') }}</div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-update-avatar"><img src="http://localhost:8080/nynjacb/images/btn-menu-change-avatar.png" alt=""> {{ gettext('Change avatar') }}</div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-update-color"><span class="nynjacb-person-bgcolor-self"></span> {{ gettext('Pick profile color') }}</div>
+    <div class="nynjacb-hr"></div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-help">{{ gettext('Help') }}</div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-feedback">{{ gettext('Feedback') }}</div>
+    <div id="nynjacb-invite" style="display: none">
+      <div class="nynjacb-hr"></div>
+      <div id="nynjacb-invite-users"></div>
+      <div class="nynjacb-menu-item" id="nynjacb-menu-refresh-invite">{{ gettext('Refresh users') }}</div>
+      <div class="nynjacb-menu-item" id="nynjacb-menu-invite-anyone">{{ gettext('Invite anyone') }}</div>
+    </div>
+    <div class="nynjacb-hr"></div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-end"><img src="http://localhost:8080/nynjacb/images/button-end-session.png" alt=""> {{ gettext('End') }} <span class="nynjacb-tool-name">{{ gettext('NynjaCB') }}</span></div>
+  </div>
+
+  <!-- template for one person in the invite-users list -->
+  <div style="display: none">
+    <div id="nynjacb-template-invite-user-item" class="nynjacb-menu-item">
+      <!-- FIXME: should include avatar in some way -->
+      <span class="nynjacb-person-name"></span>
+    </div>
+  </div>
+
+  <!-- A window version of #nynjacb-menu, for use on mobile -->
+  <div id="nynjacb-menu-window" class="nynjacb-window" style="display: none">
+    <header>{{ gettext('Settings and Profile') }}</header>
+    <section>
+    <div class="nynjacb-menu-item">
+      <img class="nynjacb-menu-avatar">
+      <span class="nynjacb-person-name-self" id="nynjacb-self-name-display"></span>
+    </div>
+    <div class="nynjacb-menu-hr-avatar"></div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-update-name-button"><img src="http://localhost:8080/nynjacb/images/button-pencil.png" alt=""> {{ gettext('Update your name') }}</div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-update-avatar-button"><img src="http://localhost:8080/nynjacb/images/btn-menu-change-avatar.png" alt=""> {{ gettext('Change avatar') }}</div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-update-color-button"><span class="nynjacb-person-bgcolor-self"></span> {{ gettext('Pick profile color') }}</div>
+    <div class="nynjacb-hr"></div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-help-button">{{ gettext('Help') }}</div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-feedback-button">{{ gettext('Feedback') }}</div>
+    <div class="nynjacb-hr"></div>
+    <div class="nynjacb-menu-item" id="nynjacb-menu-end-button"><img src="http://localhost:8080/nynjacb/images/button-end-session.png" alt=""> {{ gettext('End TOOL_NAME') }}</div>
+    </section>
+    <section class="nynjacb-buttons">
+      <button class="nynjacb-dismiss nynjacb-primary">{{ gettext('OK') }}</button>
+    </section>
+  </div>
+
+  <!-- The name editor, for use on mobile -->
+  <div id="nynjacb-edit-name-window" class="nynjacb-window" style="display: none">
+    <header>{{ gettext('Update Name') }}</header>
+    <section>
+      <div>
+        <input class="nynjacb-self-name" type="text" placeholder="{{ gettext('Enter your name') }}">
+      </div>
+    </section>
+    <section class="nynjacb-buttons">
+      <button class="nynjacb-dismiss nynjacb-primary">{{ gettext('OK') }}</button>
+    </section>
+  </div>
+
+  <div class="nynjacb-menu" id="nynjacb-pick-color" style="display: none">
+    <div class="nynjacb-triangle-up"><img src="http://localhost:8080/nynjacb/images/icn-triangle-up.png"></div>
+    <div style="display: none">
+      <div id="nynjacb-template-swatch" class="nynjacb-swatch">
+      </div>
+    </div>
+  </div>
+
+  <!-- Invisible elements that handle the RTC audio: -->
+  <audio id="nynjacb-audio-element"></audio>
+  <audio id="nynjacb-local-audio" muted="true" volume="0.3"></audio>
+  <audio id="nynjacb-notification" src="http://localhost:8080/nynjacb/images/notification.ogg"></audio>
+
+  <!-- The intro screen for someone who joins a session the first time: -->
+  <div id="nynjacb-intro" class="nynjacb-modal" style="display: none">
+    <header>{{ gettext('Join TOOL_NAME session?') }}</header>
+    <section>
+      <p>{{ gettext("Your friend has asked you to join their TOOL_SITE_LINK browser session to collaborate in real-time!")}}</p>
+      <p>{{ gettext("Would you like to join their session?") }}</p>
+    </section>
+
+    <section class="nynjacb-buttons">
+      <button class="nynjacb-destructive nynjacb-modal-dont-join">{{ gettext( "No, don't join" ) }}</button>
+      <button class="nynjacb-primary nynjacb-dismiss">{{ gettext( "Yes, join session" ) }}</button>
+    </section>
+  </div>
+
+  <!-- Shown when a web browser is completely incapable of running NynjaCB: -->
+  <div id="nynjacb-browser-broken" class="nynjacb-modal" style="display: none">
+    <header> {{ gettext('Sorry') }} </header>
+
+    <section>
+      <p>
+        {{ gettext("We're sorry, TOOL_NAME doesn't work with this browser.  Please <a href='https://github.com/mozilla/nynjacb/wiki/Supported-Browsers#supported-browsers'>upgrade to a supported browser</a> to try TOOL_NAME." ) }}
+      </p>
+
+      <p id="nynjacb-browser-broken-is-ie" style="display: none">
+        {{ gettext('We need your help fixing NynjaCB on Internet Explorer!  Here are a list of IE <a href=\"https://github.com/mozilla/nynjacb/issues?labels=IE&milestone=&page=1&state=open\" target=\"_blank\">GitHub issues</a> we need fixed that you can work on.') }}
+        {{ gettext("Internet Explorer <a href=\"https://github.com/mozilla/nynjacb/wiki/Supported-Browsers#internet-explorer\">is currently not supported</a>.  If you do want to try out NynjaCB, we'd suggest using Firefox or Chrome.") }}
+      </p>
+    </section>
+
+    <section class="nynjacb-buttons">
+      <button class="nynjacb-dismiss nynjacb-primary">{{ gettext('End TOOL_NAME') }}</button>
+    </section>
+
+  </div>
+
+  <!-- Shown when the browser has WebSockets, but is IE (i.e., IE10) -->
+  <div id="nynjacb-browser-unsupported" class="nynjacb-modal" style="display: none">
+    <header> {{ gettext('Unsupported Browser') }} </header>
+
+    <section>
+      <p>
+        {{ gettext('We need your help fixing NynjaCB on Internet Explorer!  Here are a list of IE <a href="https://github.com/mozilla/nynjacb/issues?labels=IE&milestone=&page=1&state=open" target="_blank">GitHub issues</a> we need fixed that you can work on.') }}
+        {{ gettext("Internet Explorer <a href=\"https://github.com/mozilla/nynjacb/wiki/Supported-Browsers#internet-explorer\">is currently not supported</a>.  If you do want to try out NynjaCB, we'd suggest using Firefox or Chrome.") }}
+      </p>
+
+      <p>{{ gettext('You can continue to try to use TOOL_NAME, but you are likely to hit lots of bugs.  So be warned.') }}</p>
+
+    </section>
+
+    <section class="nynjacb-buttons">
+      <button class="nynjacb-dismiss nynjacb-primary">{{ gettext('End TOOL_NAME') }}</button>
+      <button class="nynjacb-dismiss nynjacb-secondary nynjacb-browser-unsupported-anyway">{{ gettext('Try TOOL_NAME Anyway') }}</button>
+    </section>
+
+  </div>
+
+  <div id="nynjacb-confirm-end" class="nynjacb-modal" style="display: none">
+    <header> {{ gettext('End session?') }} </header>
+    <section>
+      <p>
+        {{ gettext("Are you sure you'd like to end your TOOL_NAME session?") }}
+      </p>
+    </section>
+    <section class="nynjacb-buttons">
+      <button class="nynjacb-cancel nynjacb-dismiss">{{ gettext('Cancel') }}</button>
+      <span class="nynjacb-alt-text">{{ gettext('or') }}</span>
+      <button id="nynjacb-end-session" class="nynjacb-destructive">{{ gettext('End session') }}</button>
+    </section>
+  </div>
+
+  <div id="nynjacb-feedback-form" class="nynjacb-modal" style="display: none;">
+    <header> {{ gettext('Feedback') }} </header>
+    <iframe src="https://docs.google.com/a/mozilla.com/forms/d/1lVE7JyRo_tjakN0mLG1Cd9X9vseBX9wci153z9JcNEs/viewform?embedded=true" width="400" height="300" frameborder="0" marginheight="0" marginwidth="0">{{ gettext('Loading form...') }}</iframe>
+    <!-- <p><button class="nynjacb-modal-close">Close</button></p> -->
+  </div>
+
+  <div style="display: none">
+    <!-- This is when you join a session and the other person has already changed to another URL: -->
+    <div id="nynjacb-template-url-change" class="nynjacb-modal">
+      <header> {{ gettext('Following to new URL...') }} </header>
+      <section>
+        <div class="nynjacb-person"></div>
+        {{ gettext('Following') }}
+        <span class="nynjacb-person-name"></span>
+        {{ gettext( "to" ) }} <a href="" class="nynjacb-person-url nynjacb-person-url-title"></a>
+      </section>
+    </div>
+
+    <!-- This is when someone invites you to their session: -->
+    <div id="nynjacb-template-invite" class="nynjacb-chat-item">
+      <div class="nynjacb-person"></div>
+      <div>
+        <span class="nynjacb-person-name"></span>
+        {{ gettext('has invited') }} <strong class="nynjacb-if-forEveryone">{{ gettext('anyone') }}</strong>
+        <strong class="nynjacb-ifnot-forEveryone">{{ gettext('you') }}</strong>
+        {{ gettext( "to" ) }} <a href="" data-nynjacb-subattr-href="href" class="nynjacb-sub-hrefTitle" target="_blank"></a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- The pointer at the side of a window: -->
+  <div id="nynjacb-window-pointer-right" style="display: none"></div>
+  <div id="nynjacb-window-pointer-left" style="display: none"></div>
+
+  <!-- The element that overlaps the background of the page during a modal dialog: -->
+  <div id="nynjacb-modal-background" style="display: none"></div>
+
+  <!-- Some miscellaneous templates -->
+  <div style="display: none">
+
+    <!-- This is the cursor: -->
+    <div id="nynjacb-template-cursor" class="nynjacb-cursor nynjacb">
+      <!-- Note: images/cursor.svg is a copy of this (for editing): -->
+      <!-- crossbrowser svg dropshadow http://demosthenes.info/blog/600/Creating-a-True-CrossBrowser-Drop-Shadow- -->
+      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      	 width="15px" height="22.838px" viewBox="96.344 146.692 15 22.838" enable-background="new 96.344 146.692 15 22.838"
+      	 xml:space="preserve">
+      <path fill="#231F20" d="M98.984,146.692c2.167,1.322,1.624,6.067,3.773,7.298c-0.072-0.488,2.512-0.931,3.097,0
+      	c0.503,0.337,1.104-0.846,2.653,0.443c0.555,0.593,3.258,2.179,1.001,8.851c-0.446,1.316,2.854,0.135,1.169,2.619
+      	c-3.748,5.521-9.455,2.787-9.062,1.746c1.06-2.809-6.889-4.885-4.97-9.896c0.834-2.559,2.898,0.653,2.923,0.29
+      	c-0.434-1.07-2.608-5.541-2.923-6.985C96.587,150.793,95.342,147.033,98.984,146.692z"/>
+      </svg>
+      <!-- <img class="nynjacb-cursor-img" src="http://localhost:8080/nynjacb/images/cursor.svg"> -->
+      <span class="nynjacb-cursor-container">
+        <span class="nynjacb-cursor-name"></span>
+        <span style="display:none" class="nynjacb-cursor-typing" id="nynjacb-cursor-typebox">
+          <span class="nynjacb-typing-ellipse-one">&#9679;</span><span class="nynjacb-typing-ellipse-two">&#9679;</span><span class="nynjacb-typing-ellipse-three">&#9679;</span>
+        </span>
+        <!-- Displayed when the cursor is below the screen: -->
+        <span class="nynjacb-cursor-down">
+
+        </span>
+        <!-- Displayed when the cursor is above the screen: -->
+        <span class="nynjacb-cursor-up">
+
+        </span>
+      </span>
+    </div>
+
+    <!-- This is the element that goes around focused form elements: -->
+    <div id="nynjacb-template-focus">
+      <div class="nynjacb-focus nynjacb-person-bordercolor"></div>
+    </div>
+
+    <!-- This is a click: -->
+    <div id="nynjacb-template-click" class="nynjacb-click nynjacb">
+    </div>
+  </div>
+</div>
